@@ -5,8 +5,11 @@ import { BsFacebook } from "react-icons/bs";
 import { AiFillLinkedin, AiOutlineGithub } from "react-icons/ai";
 import Image from "next/image";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import Footer from "~/components/Footer";
+import BlogCard from "~/components/BlogCard";
+import { generateArray } from "~/utils";
 
-const Home: NextPage = () => {
+const Home: NextPage = (props) => {
   return (
     <>
       <Head>
@@ -18,7 +21,7 @@ const Home: NextPage = () => {
         data-theme="mytheme"
         className="min-h-screen bg-gradient-to-b from-accent to-neutral text-base-100"
       >
-        <div className="relative mx-auto w-[calc(100%-16px)] max-w-[1200px]">
+        <div className="relative mx-auto min-h-screen w-[calc(100%-16px)] max-w-[1200px]">
           <div className="flex items-center justify-between py-4">
             <div className="text-xl text-base-100 md:text-2xl">
               <span className="text-primary">Dat</span>isekai
@@ -26,7 +29,7 @@ const Home: NextPage = () => {
             <button className="btn-primary btn text-base-100">Login</button>
           </div>
 
-          <div className="mt-5 flex space-x-4 flex-col md:flex-row justify-between">
+          <div className="mt-5 flex flex-col justify-between space-y-4 md:space-x-4 md:flex-row">
             <div className="w-full space-y-4 md:w-[30%]">
               <p className="text-2xl md:text-4xl">Chào bạn, mình là </p>
               <p className="text-4xl text-primary md:text-6xl">Datisekai</p>
@@ -62,15 +65,15 @@ const Home: NextPage = () => {
                 </button>
               </div>
             </div>
-            <div className="flex flex-1 flex-col md:flex-row justify-end">
+            <div className="flex flex-1 flex-col justify-end  md:flex-row">
               <div className="">
                 <LazyLoadImage
                   src="/images/me.jpg"
-                  className="w-full rounded-bl-2xl rounded-tl-2xl md:w-[500px]"
+                  className="w-full rounded-2xl md:rounded-br-none md:rounded-tr-none md:rounded-bl-2xl md:rounded-tl-2xl md:w-[500px]"
                   alt="Datisekai"
                 />
               </div>
-              <div className="stats stats-vertical rounded-tl-none rounded-bl-none shadow">
+              <div className="stats stats-vertical md:rounded-tl-none mt-2 md:mt-0 md:rounded-bl-none shadow">
                 <div className="stat">
                   <div className="stat-title">Ngày sinh</div>
                   <div className="stat-value">03</div>
@@ -91,7 +94,18 @@ const Home: NextPage = () => {
               </div>
             </div>
           </div>
+
+          <div className="mt-5">
+            <h2 className="line-gradient relative inline text-lg md:text-xl">
+              Sản phẩm của mình
+            </h2>
+            <div className="mt-7 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+              {generateArray(8).map(item => <BlogCard key={item}  />)}
+            </div>
+          </div>
         </div>
+        <div className="pb-10"></div>
+        <Footer />
       </main>
     </>
   );

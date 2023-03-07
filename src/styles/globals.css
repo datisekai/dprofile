@@ -7,3 +7,15 @@
 body{
     font-family: 'Tilt Neon', cursive;
 }
+
+
+@layer components{
+    .line-gradient::after{
+        content: "";
+        width: 60%;
+        position: absolute;
+        height: 5px;
+        display:block;
+        @apply rounded-md bg-gradient-to-r from-base-100 to-primary mt-1
+    }
+}
