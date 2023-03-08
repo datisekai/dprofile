@@ -10,14 +10,15 @@ const TimeLine = () => {
       <h2 className="line-gradient relative inline text-lg md:text-xl">
         Timeline
       </h2>
-      <div className="mt-7 flex flex-col justify-between md:flex-row md:items-center">
+      <div className="mt-3 flex flex-col justify-between md:flex-row md:items-center">
         <ul className="steps steps-vertical">
-          {dataTimeLine.map((item) => (
+          {dataTimeLine.map((item,index) => (
             <li
+            data-content={item <= timeline ? "✓" : index + 1}
               key={item}
               onClick={() => setTimeLine(item)}
               className={`step cursor-pointer ${
-                item === timeline ? "step-primary" : ''
+                item <= timeline ? "step-primary" : ''
               }`}
             >
               {item}

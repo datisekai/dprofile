@@ -3,17 +3,23 @@
 @tailwind utilities;
 
 @import url('https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap');
 
 body{
     font-family: 'Tilt Neon', cursive;
 }
 
-@supports (-webkit-overflow-scrolling: touch) {
+@media (max-width:768px) {
+    body{
+        font-family: 'Poppins', sans-serif;
+     }
+}
+/* CSS only ioss */
+/* @supports (-webkit-overflow-scrolling: touch) {
     body{
        font-family: 'Merriweather', serif;
     }
-  }
+  } */
 
 @layer components{
     .line-gradient::after{

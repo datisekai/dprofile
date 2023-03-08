@@ -42,7 +42,7 @@ const Home: NextPage = (props) => {
               </div>
             </motion.div>
 
-            <button className="btn-primary btn text-base-100">Login</button>
+            <button className="btn-primary btn text-base-100">Mode</button>
           </div>
 
           <div className="mt-5 flex flex-col justify-between space-y-4 md:flex-row md:space-x-4">
