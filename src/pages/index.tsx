@@ -1,17 +1,14 @@
+import { motion } from "framer-motion";
 import { type NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
-import { BsFacebook } from "react-icons/bs";
 import { AiFillLinkedin, AiOutlineGithub } from "react-icons/ai";
-import Image from "next/image";
+import { BsFacebook } from "react-icons/bs";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import Footer from "~/components/Footer";
-import BlogCard from "~/components/BlogCard";
-import { generateArray } from "~/utils";
 import Typed from "react-typed";
-import { motion } from "framer-motion";
-import TimeLine from "~/components/TimeLine";
+import Footer from "~/components/Footer";
+import Header from "~/components/Header";
 import ListProduct from "~/components/ListProduct";
+import TimeLine from "~/components/TimeLine";
 
 const Home: NextPage = (props) => {
   return (
@@ -22,28 +19,10 @@ const Home: NextPage = (props) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main
-        data-theme="mytheme"
         className="min-h-screen bg-gradient-to-b from-accent to-neutral text-base-100"
       >
         <div className="relative mx-auto min-h-screen w-[calc(100%-16px)] max-w-[1200px]">
-          <div className="flex items-center justify-between py-4">
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ rotate: 0, scale: 1 }}
-              transition={{
-                type: "spring",
-                stiffness: 260,
-                damping: 20,
-                repeat: Infinity,
-              }}
-            >
-              <div className="text-xl text-base-100 md:text-2xl">
-                <span className="text-primary">Dat</span>isekai
-              </div>
-            </motion.div>
-
-            <button className="btn-primary btn text-base-100">Mode</button>
-          </div>
+          <Header/>
 
           <div className="mt-5 flex flex-col justify-between space-y-4 md:flex-row md:space-x-4">
             <div className="w-full space-y-4 md:w-[30%]">
