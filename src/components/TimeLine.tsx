@@ -1,10 +1,20 @@
-import React from "react";
+import React, { FC, useMemo } from "react";
 import { motion } from "framer-motion";
+import { TimelineModel } from "~/models/TimelineModel";
 
 const dataTimeLine = [2020, 2021, 2022, 2023];
 
-const TimeLine = () => {
-  const [timeline, setTimeLine] = React.useState(2020);
+interface TimeLineProps{
+  data:TimelineModel[]
+}
+
+const TimeLine:FC<TimeLineProps> = ({data}) => {
+  const [timeline, setTimeLine] = React.useState(data[0]?.year || 2020);
+
+  const currentTimeline = useMemo(() => {
+    return data.find(item => item.year === timeline)
+  },[timeline])
+
   return (
     <div className="mt-5">
       <h2 className="line-gradient relative inline text-lg md:text-xl">
@@ -12,20 +22,37 @@ const TimeLine = () => {
       </h2>
       <div className="mt-3 flex flex-col justify-between md:flex-row md:items-center">
         <ul className="steps steps-vertical">
-          {dataTimeLine.map((item,index) => (
+          {data.map((item,index) => (
             <li
-            data-content={item <= timeline ? "✓" : index + 1}
-              key={item}
-              onClick={() => setTimeLine(item)}
+            data-content={item.year <= timeline ? "✓" : index + 1}
+              key={item.id}
+              onClick={() => setTimeLine(item.year)}
               className={`step cursor-pointer ${
-                item <= timeline ? "step-primary" : ''
+                item.year <= timeline ? "step-primary" : ''
               }`}
             >
-              {item}
+              {item.year}
             </li>
           ))}
         </ul>
-        {timeline === 2020 && (
+        <div className="ml-0 flex-1 rounded-2xl bg-accent p-4 text-xl md:ml-10">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ rotate: 0, scale: 1 }}
+              transition={{
+                type: "spring",
+                stiffness: 260,
+                damping: 20,
+              }}
+            >
+              <div className="">
+                <h2>{currentTimeline?.year}</h2>
+                <h3>{currentTimeline?.title}</h3>
+                <p className="mt-4 text-lg" dangerouslySetInnerHTML={{__html:currentTimeline?.content || ""}}/>
+              </div>
+            </motion.div>
+          </div>
+        {/* {timeline === 2020 && (
           <div className="ml-0 flex-1 rounded-2xl bg-accent p-4 text-xl md:ml-10">
             <motion.div
               initial={{ scale: 0 }}
@@ -126,7 +153,7 @@ const TimeLine = () => {
               </div>
             </motion.div>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

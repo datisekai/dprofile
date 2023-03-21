@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Select from "react-select";
-import dataTheme from "./data/dataTheme";
+import dataTheme from "../data/dataTheme";
 
 const Header = () => {
   const [theme, setTheme] = useState("");

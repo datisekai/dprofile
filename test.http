@@ -1,0 +1,23 @@
+POST http://localhost:3000/api/login
+Content-Type: application/json
+
+{
+    "username":"datisekai",
+    "password":"datisekai3122"
+}
+
+###
+GET http://localhost:3000/api/me
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MTk3ODcyN2ViZjhiY2E2ZjI1NzZkMyIsInVzZXJuYW1lIjoiZGF0aXNla2FpIiwiaWF0IjoxNjc5MzkwOTk5LCJleHAiOjE2Nzk0NzczOTl9.8hMQo0jmc0qxaXA3T7XyYbvnk_oFidcPVWND-KISFNs
+
+###
+POST http://localhost:3000/api/timeline
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MTk3ODcyN2ViZjhiY2E2ZjI1NzZkMyIsInVzZXJuYW1lIjoiZGF0aXNla2FpIiwiaWF0IjoxNjc5NDA5MTUyLCJleHAiOjE2Nzk0OTU1NTJ9.6Nz6G4kbIAsVJkNLaJ3aIlwB1RPPhq4Bj8d-PmOc_fQ
+
+{
+    "year":2020,
+    "title":"Khởi đầu hành trình",
+    "content":"Bắt đầu học CNTT tại Đại Học Sài Gòn, lúc này vẫn chưa biết lập trình là gì, vẫn còn chật vật với C/C++ khi xung quanh bạn bè đều đã học hoặc biết lập trình trước thì mới vào ngành này. Mình đã cày rất nhiều, cắm mặt vào máy tính giải các bài tập C/C++."
+}

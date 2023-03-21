@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-    provider = "sqlite"
+    provider = "mongodb"
     // NOTE: When using postgresql, mysql or sqlserver, uncomment the @db.Text annotations in model Account below
     // Further reading:
     // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
@@ -14,53 +14,41 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Example {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
-
-// Necessary for Next auth
-model Account {
-    id                String  @id @default(cuid())
-    userId            String
-    type              String
-    provider          String
-    providerAccountId String
-    refresh_token     String? // @db.Text
-    access_token      String? // @db.Text
-    expires_at        Int?
-    token_type        String?
-    scope             String?
-    id_token          String? // @db.Text
-    session_state     String?
-    user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-    @@unique([provider, providerAccountId])
-}
-
-model Session {
-    id           String   @id @default(cuid())
-    sessionToken String   @unique
-    userId       String
-    expires      DateTime
-    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
 model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    username  String   @unique
+    password  String
+    active    Boolean  @default(true)
+    createdAt DateTime @default(now()) @db.Timestamp()
+    updatedAt DateTime @default(now()) @db.Timestamp()
 }
 
-model VerificationToken {
-    identifier String
-    token      String   @unique
-    expires    DateTime
+model TimeLine {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    year      Int      @unique
+    title     String
+    content   String
+    active    Boolean  @default(true)
+    createdAt DateTime @default(now()) @db.Timestamp()
+    updatedAt DateTime @default(now()) @db.Timestamp()
+}
 
-    @@unique([identifier, token])
+model Project {
+    id          String   @id @default(auto()) @map("_id") @db.ObjectId
+    url         String?
+    name        String
+    description String
+    thumbnail   String
+    html        String
+    createdAt   DateTime @default(now()) @db.Timestamp()
+    updatedAt   DateTime @default(now()) @db.Timestamp()
+}
+
+model Info {
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    code      String   @unique
+    content   String
+    title     String
+    createdAt DateTime @default(now()) @db.Timestamp()
+    updatedAt DateTime @default(now()) @db.Timestamp()
 }
