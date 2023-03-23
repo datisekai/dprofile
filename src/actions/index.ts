@@ -4,6 +4,24 @@ const axiosClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
 });
 
+const UPLOAD_NAME = process.env.NEXT_PUBLIC_UPLOAD_NAME;
+const UPLOAD_PRESET = process.env.NEXT_PUBLIC_UPLOAD_PRESET;
+
+const upload = axios.create({
+  baseURL: `https://api.cloudinary.com/v1_1/${UPLOAD_NAME}/image/upload`,
+});
+
+export const uploadCloudinary = async (file: File | null) => {
+  if(!file){
+    return null
+  }
+  const formData = new FormData();
+  formData.append('file',file);
+  formData.append('upload_preset',UPLOAD_PRESET as string);
+  const imageData = await upload.post('/',formData);
+  return imageData.data.url;
+};
+
 axiosClient.interceptors.request.use((config: any) => {
   if (config.url?.indexOf("login") !== -1) {
     return config;

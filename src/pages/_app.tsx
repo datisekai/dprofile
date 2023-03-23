@@ -3,6 +3,7 @@ import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import NextNProgress from "nextjs-progressbar";
+import 'suneditor/dist/css/suneditor.min.css'
 
 import "~/styles/globals.css";
 import { QueryClientProvider, QueryClient } from "react-query";
@@ -16,7 +17,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <SessionProvider session={session}>
       <QueryClientProvider client={queryClient}>
-        <NextNProgress color="#cc66ff"/>
+        <NextNProgress color="#cc66ff" options={{ showSpinner: false }} />
         <Component {...pageProps} />
       </QueryClientProvider>
     </SessionProvider>

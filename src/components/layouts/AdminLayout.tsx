@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import HeaderAdmin from "~/components/Headers/HeaderAdmin";
 import dataSidebar from "../data/dataSidebar";
-import {FiLogOut} from 'react-icons/fi'
-import {deleteCookie} from 'cookies-next'
+import { FiLogOut } from "react-icons/fi";
+import { deleteCookie } from "cookies-next";
+import { useQuery } from "react-query";
+import AuthAction from "~/actions/AuthAction";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -13,10 +15,12 @@ interface AdminLayoutProps {
 const AdminLayout: FC<AdminLayoutProps> = ({ children }) => {
   const router = useRouter();
 
+  const { data, isLoading } = useQuery(["me"], AuthAction.me);
+
   const handleLogout = () => {
-    deleteCookie('token')
-    router.push('/login')
-  }
+    deleteCookie("token");
+    router.push("/login");
+  };
 
   return (
     <>
@@ -29,12 +33,17 @@ const AdminLayout: FC<AdminLayoutProps> = ({ children }) => {
           </div>
           <div className="drawer-side">
             <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
-            <div className="menu flex flex-col justify-between w-64 bg-accent  p-4 text-base-100">
+            <div className="menu flex w-64 flex-col justify-between bg-accent  p-4 text-base-100">
               <ul className="">
                 {dataSidebar.map((item) => (
                   <li
                     className={`${
-                      router.asPath === item.url ? "rounded-md bg-neutral" : ""
+                      router.asPath === "/admin" && item.url === "/admin" ? "rounded-md bg-neutral" : ""
+                    } ${
+                      item.url !== "/admin" &&
+                      router.asPath.includes(item.url)
+                        ? "rounded-md bg-neutral"
+                        : ""
                     }`}
                     key={item.url}
                   >
@@ -43,8 +52,8 @@ const AdminLayout: FC<AdminLayoutProps> = ({ children }) => {
                 ))}
               </ul>
               <div>
-                <button onClick={handleLogout} className="btn gap-2 w-full">
-                 <FiLogOut className="text-lg"/>
+                <button onClick={handleLogout} className="btn w-full gap-2">
+                  <FiLogOut className="text-lg" />
                   Logout
                 </button>
               </div>

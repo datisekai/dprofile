@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import slugify from "slugify";
 import isLogin from "~/middleware/isLogin";
 import { prisma } from "~/server/db";
 import { showInternal, showMissing } from "~/utils";
@@ -6,36 +7,40 @@ import { showInternal, showMissing } from "~/utils";
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
     try {
-      const timelines = await prisma.timeLine.findMany({
+      const projects = await prisma.project.findMany({
         where: {
           active: true,
         },
         orderBy: {
-          year: "asc",
+          updatedAt: "desc",
         },
       });
 
-      return res.json(timelines);
+      return res.json(projects);
     } catch (error) {
       return showInternal(res);
     }
   } else if (req.method === "POST") {
     try {
-      const { year, title, content } = req.body;
-      if (!year || !title || !content) {
+      const { url, name, description, thumbnail, html, active } = req.body;
+      if (!name || !description || !thumbnail || !html) {
         return showMissing(res);
       }
 
-      const newTimeline = await prisma.timeLine.create({
+      const newProject = await prisma.project.create({
         data: {
-          year: Number(year),
-          content,
-          title,
+          url,
+          name,
+          description,
+          thumbnail,
+          html,
+          active,
+          slug:slugify(name,{lower:true})
         },
       });
 
-      if (newTimeline) {
-        return res.json(newTimeline);
+      if (newProject) {
+        return res.json(newProject);
       }
       return res.status(404).json({ success: false, message: "Not found" });
     } catch (error) {
@@ -50,16 +55,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         return showMissing(res);
       }
 
-
-      const updateTimeline = await prisma.timeLine.update({
+      const updateProject = await prisma.project.update({
         where: {
           id: id as string,
         },
         data,
       });
 
-      if (updateTimeline) {
-        return res.json(updateTimeline);
+      if (updateProject) {
+        return res.json(updateProject);
       }
 
       return res.status(404).json({ success: false, message: "Not found" });
@@ -74,7 +78,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         return showMissing(res);
       }
 
-      const deleteTimeline = await prisma.timeLine.update({
+      const deleteProject = await prisma.project.update({
         where: {
           id: id as string,
         },
@@ -83,8 +87,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
       });
 
-      if (deleteTimeline) {
-        return res.json(deleteTimeline);
+      if (deleteProject) {
+        return res.json(deleteProject);
       }
 
       return res.status(404).json({ success: false, message: "Not found" });

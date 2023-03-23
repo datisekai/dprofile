@@ -1,16 +1,28 @@
-import React from "react";
+import Link from "next/link";
+import React, { FC } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import { ProjectModel } from "~/models/ProjectModel";
 
-const BlogCard = () => {
+const BlogCard: FC<ProjectModel> = ({
+  active,
+  createdAt,
+  description,
+  html,
+  id,
+  name,
+  slug,
+  thumbnail,
+  updatedAt,
+  url,
+}) => {
   return (
-    <div className="space-y-2">
-      <LazyLoadImage src="/images/me.jpg" className="rounded-md" alt="Blog" />
-      <h1 className="text-xl">DMovie</h1>
-      <p className="">
-        Dự án cá nhân mình phát triển với mục đích chia sẻ các giao diện đơn
-        giản hay gặp, các bạn có thể lấy giao diện chỉ với 1 vài cú nhấp chuột.
-      </p>
-    </div>
+    <Link href={`/${slug}`}>
+      <div className="space-y-2">
+        <LazyLoadImage src={thumbnail} className="rounded-md" alt="Blog" />
+        <h1 className="text-xl">{name}</h1>
+        <p className="">{description}</p>
+      </div>
+    </Link>
   );
 };
 

@@ -21,3 +21,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MTk3ODcyN
     "title":"Khởi đầu hành trình",
     "content":"Bắt đầu học CNTT tại Đại Học Sài Gòn, lúc này vẫn chưa biết lập trình là gì, vẫn còn chật vật với C/C++ khi xung quanh bạn bè đều đã học hoặc biết lập trình trước thì mới vào ngành này. Mình đã cày rất nhiều, cắm mặt vào máy tính giải các bài tập C/C++."
 }
+
+
+###
+GET http://localhost:3000/api/project
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MTk3ODcyN2ViZjhiY2E2ZjI1NzZkMyIsInVzZXJuYW1lIjoiZGF0aXNla2FpIiwiaWF0IjoxNjc5NTg0NDcwLCJleHAiOjE2Nzk2NzA4NzB9.ZfUIqwWb1fnO2HEMSPisrqKQ-8UYHUN3JaLKtcW9FYA

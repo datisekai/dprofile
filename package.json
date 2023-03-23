@@ -28,6 +28,8 @@
     "react-query": "^3.39.3",
     "react-select": "^5.7.0",
     "react-typed": "^1.2.0",
+    "slugify": "^1.6.5",
+    "suneditor-react": "^3.4.1",
     "sweetalert2": "^11.7.3",
     "zod": "^3.20.6"
   },

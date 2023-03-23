@@ -57,8 +57,11 @@ const Login = () => {
         <div className="mx-auto max-w-[1200px]  px-2">
           <Header />
           <div className="flex h-full min-h-[calc(100vh-70px)] items-center justify-center">
-            <form onSubmit={handleSubmit(handleLogin)}>
-              <div className="w-[90%] rounded-md bg-base-100 p-4 shadow-md md:w-[400px]">
+            <form
+              className="w-[90%] rounded-md bg-base-100 p-4 shadow-md md:w-[400px]"
+              onSubmit={handleSubmit(handleLogin)}
+            >
+              <div>
                 <h1 className="text-center text-xl">Login</h1>
                 <div className="mt-4 space-y-2">
                   <div className="space-y-1">

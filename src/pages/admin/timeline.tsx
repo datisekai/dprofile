@@ -27,8 +27,9 @@ interface TdTableProps {
   data: TimelineModel;
   index: number;
   onDisplayEdit: (data: TimelineModel) => void;
+  handleDelete:(id:string) => void
 }
-const TdTable: FC<TdTableProps> = ({ data, index, onDisplayEdit }) => {
+const TdTable: FC<TdTableProps> = ({ data, index, onDisplayEdit,handleDelete }) => {
   const [isShowMore, setIsShowMore] = useState(false);
 
   return (
@@ -51,7 +52,7 @@ const TdTable: FC<TdTableProps> = ({ data, index, onDisplayEdit }) => {
         <div className="flex space-x-2">
           <button onClick={() => onDisplayEdit(data)}>Edit</button>
 
-          <button>Delete</button>
+          <button onClick={() => handleDelete(data.id)}>Delete</button>
         </div>
       </td>
     </tr>
@@ -98,6 +99,37 @@ const TimeLine: NextPage<TimeLineProps> = ({ timelines }) => {
       },
     }
   );
+
+  const {mutate:deleteTimeline, isLoading:isLoadingDelete} = useMutation(TimeLineAction.delete,{
+    onSuccess:() => {
+      Swal.fire("Success", "Delete successfull", "success");
+      router.replace(router.asPath);
+    },
+    onError:() => {
+      Swal.fire({
+        title: "Error!",
+        text: textError,
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+  })
+
+  const handleDelete = (id:string) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteTimeline(id)
+      }
+    })
+  }
 
   const { mutate: updateTimeline, isLoading: isLoadingUpdate } = useMutation(
     TimeLineAction.update,
@@ -167,6 +199,7 @@ const TimeLine: NextPage<TimeLineProps> = ({ timelines }) => {
                     key={item.id}
                     onDisplayEdit={handleDisplayEdit}
                     data={item}
+                    handleDelete={handleDelete}
                     index={index}
                   />
                 ))}

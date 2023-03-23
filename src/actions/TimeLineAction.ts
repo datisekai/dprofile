@@ -21,7 +21,7 @@ const TimeLineAction: TimeLineActionType = {
     return result.data
   },
   delete:async(id) => {
-    const result = await axiosClient.put(`/timeline?id=${id}`)
+    const result = await axiosClient.delete(`/timeline?id=${id}`)
     return result.data
   },
 

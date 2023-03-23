@@ -10,14 +10,16 @@ import Header from "~/components/Headers/Header";
 import ListProduct from "~/components/ListProduct";
 import Meta from "~/components/Meta";
 import TimeLine from "~/components/TimeLine";
+import { ProjectModel } from "~/models/ProjectModel";
 import { TimelineModel } from "~/models/TimelineModel";
 import { prisma } from "~/server/db";
 
-interface HomeProps{
-  timelines:TimelineModel[]
+interface HomeProps {
+  timelines: TimelineModel[];
+  projects: ProjectModel[]
 }
 
-const Home: NextPage<HomeProps> = ({timelines}) => {
+const Home: NextPage<HomeProps> = ({ timelines,projects }) => {
   return (
     <>
       <Meta title="Datisekai | Profile" />
@@ -45,21 +47,21 @@ const Home: NextPage<HomeProps> = ({timelines}) => {
                   Thuật Phần Mềm.
                 </p>
                 <p>Mình thích đi ăn, đi chơi, đi dạo phố vào buổi tối.</p>
-                  {/* <p>
+                {/* <p>
                     Đặc biệt là mình{" "}
                     <span className="text-primary">độc thân</span> nhaa
                   </p> */}
               </div>
               <div className="flex space-x-2">
-                <button className="btn-primary btn-outline btn-sm btn gap-2  md:btn-md">
+                <button className="btn-outline btn-primary btn-sm btn gap-2  md:btn-md">
                   <BsFacebook />
                   Facebook
                 </button>
-                <button className="btn-primary btn-outline btn-sm btn gap-2 md:btn-md">
+                <button className="btn-outline btn-primary btn-sm btn gap-2 md:btn-md">
                   <AiFillLinkedin />
                   Linkedin
                 </button>
-                <button className="btn-primary btn-outline btn-sm btn gap-2 md:btn-md">
+                <button className="btn-outline btn-primary btn-sm btn gap-2 md:btn-md">
                   <AiOutlineGithub />
                   Github
                 </button>
@@ -100,7 +102,7 @@ const Home: NextPage<HomeProps> = ({timelines}) => {
           </div>
 
           <TimeLine data={timelines} />
-          <ListProduct />
+          <ListProduct data={projects}/>
         </div>
         <div className="pb-10"></div>
         <Footer />
@@ -121,10 +123,20 @@ export const getStaticProps: GetStaticProps = async () => {
     },
   });
 
+  const projects = await prisma.project.findMany({
+    where: {
+      active: true,
+    },
+    orderBy: {
+      updatedAt: "desc",
+    },
+  });
+
   return {
     props: {
       timelines: JSON.parse(JSON.stringify(timelines)),
+      projects: JSON.parse(JSON.stringify(projects)),
     },
-    revalidate:60
+    revalidate: 60,
   };
 };
