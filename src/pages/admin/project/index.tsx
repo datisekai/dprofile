@@ -24,6 +24,7 @@ interface TdTableProps {
 const TdTable: FC<TdTableProps> = ({ data, index, handleDelete }) => {
   const [isShowMore, setIsShowMore] = useState(false);
 
+  console.log(data.description.length)
   return (
     <tr>
       <th>{index + 1}</th>
@@ -37,9 +38,11 @@ const TdTable: FC<TdTableProps> = ({ data, index, handleDelete }) => {
         />
       </td>
       <td>{data.url || "Không có"}</td>
-      <td>{data.name}</td>
       <td>
-        <p className="whitespace-normal">{data.description}</p>
+        <p className="whitespace-normal">{data.name}</p>
+      </td>
+      <td>
+        <p className="whitespace-normal">{isShowMore ? data.description : data.description.slice(0,100)}</p>
         {data.description.length > 100 && (
           <button className="link" onClick={() => setIsShowMore(!isShowMore)}>
             {isShowMore ? "Shortcut" : "Show more"}

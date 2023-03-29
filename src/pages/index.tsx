@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { GetStaticProps, type NextPage } from "next";
 import Head from "next/head";
+import { useRouter } from "next/router";
+import { useMemo } from "react";
 import { AiFillLinkedin, AiOutlineGithub } from "react-icons/ai";
 import { BsFacebook } from "react-icons/bs";
 import { LazyLoadImage } from "react-lazy-load-image-component";
@@ -10,16 +12,40 @@ import Header from "~/components/Headers/Header";
 import ListProduct from "~/components/ListProduct";
 import Meta from "~/components/Meta";
 import TimeLine from "~/components/TimeLine";
+import { InfoModel } from "~/models/InfoModel";
 import { ProjectModel } from "~/models/ProjectModel";
 import { TimelineModel } from "~/models/TimelineModel";
 import { prisma } from "~/server/db";
 
 interface HomeProps {
   timelines: TimelineModel[];
-  projects: ProjectModel[]
+  projects: ProjectModel[];
+  info: InfoModel[];
 }
 
-const Home: NextPage<HomeProps> = ({ timelines,projects }) => {
+const initInfo = {
+  avatar: "/images/me.jpg",
+  position: "Intern/Fresher Frontend Developer",
+};
+
+const Home: NextPage<HomeProps> = ({ timelines, projects, info }) => {
+  const infoRender = useMemo(() => {
+    const infoAvatar = info.find((item) => item.code === "avatar");
+    const infoFacebook = info.find((item) => item.code === "facebook");
+    const infoLinkedin = info.find((item) => item.code === "linkedin");
+    const infoGithub = info.find((item) => item.code === "github");
+    const position = info.find((item) => item.code === "position");
+
+    return {
+      avatar: infoAvatar ? infoAvatar.content : initInfo.avatar,
+      position: position ? position.content : initInfo.position,
+      facebook: infoFacebook ? infoFacebook.content : undefined,
+      linkedin: infoLinkedin ? infoLinkedin.content : undefined,
+      github: infoGithub ? infoGithub.content : undefined,
+    };
+  }, [info]);
+
+  const router = useRouter();
   return (
     <>
       <Meta title="Datisekai | Profile" />
@@ -39,7 +65,7 @@ const Home: NextPage<HomeProps> = ({ timelines,projects }) => {
                 />
               </p>
               <p className="text-2xl leading-5 md:text-4xl">
-                Intern/Fresher Frontend Developer
+                {infoRender.position}
               </p>
               <div className="leading-8">
                 <p>
@@ -53,18 +79,33 @@ const Home: NextPage<HomeProps> = ({ timelines,projects }) => {
                   </p> */}
               </div>
               <div className="flex space-x-2">
-                <button className="btn-outline btn-primary btn-sm btn gap-2  md:btn-md">
-                  <BsFacebook />
-                  Facebook
-                </button>
-                <button className="btn-outline btn-primary btn-sm btn gap-2 md:btn-md">
-                  <AiFillLinkedin />
-                  Linkedin
-                </button>
-                <button className="btn-outline btn-primary btn-sm btn gap-2 md:btn-md">
-                  <AiOutlineGithub />
-                  Github
-                </button>
+                {infoRender.facebook && (
+                  <button
+                    onClick={() => router.push(infoRender.facebook as string)}
+                    className="btn-outline btn-primary btn-sm btn gap-2  md:btn-md"
+                  >
+                    <BsFacebook />
+                    Facebook
+                  </button>
+                )}
+                {infoRender.linkedin && (
+                  <button
+                    onClick={() => router.push(infoRender.linkedin as string)}
+                    className="btn-outline btn-primary btn-sm btn gap-2 md:btn-md"
+                  >
+                    <AiFillLinkedin />
+                    Linkedin
+                  </button>
+                )}
+                {infoRender.github && (
+                  <button
+                    onClick={() => router.push(infoRender.github as string)}
+                    className="btn-outline btn-primary btn-sm btn gap-2 md:btn-md"
+                  >
+                    <AiOutlineGithub />
+                    Github
+                  </button>
+                )}
               </div>
             </div>
             <div className="flex-1 cursor-pointer">
@@ -102,7 +143,7 @@ const Home: NextPage<HomeProps> = ({ timelines,projects }) => {
           </div>
 
           <TimeLine data={timelines} />
-          <ListProduct data={projects}/>
+          <ListProduct data={projects} />
         </div>
         <div className="pb-10"></div>
         <Footer />
@@ -132,10 +173,13 @@ export const getStaticProps: GetStaticProps = async () => {
     },
   });
 
+  const info = await prisma.info.findMany();
+
   return {
     props: {
       timelines: JSON.parse(JSON.stringify(timelines)),
       projects: JSON.parse(JSON.stringify(projects)),
+      info: JSON.parse(JSON.stringify(info)),
     },
     revalidate: 60,
   };

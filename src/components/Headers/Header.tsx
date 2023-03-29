@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Select from "react-select";
 import dataTheme from "../data/dataTheme";
+import Link from "next/link";
 
 const Header = () => {
   const [theme, setTheme] = useState("");
@@ -37,9 +38,9 @@ const Header = () => {
           repeat: Infinity,
         }}
       >
-        <div className="text-xl text-base-100 md:text-2xl">
+        <Link href={'/'}><div className="text-xl text-base-100 md:text-2xl">
           <span className="text-primary">Dat</span>isekai
-        </div>
+        </div></Link>
       </motion.div>
 
       <div>

@@ -32,3 +32,10 @@ body{
         @apply rounded-md bg-gradient-to-r from-base-100 to-primary mt-1
     }
 }
+
+.detail img{
+    width: 100% !important;
+    display: block;
+    max-width: 800px;
+    padding: 8px 0px;
+}
