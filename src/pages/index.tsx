@@ -35,6 +35,7 @@ const Home: NextPage<HomeProps> = ({ timelines, projects, info }) => {
     const infoLinkedin = info.find((item) => item.code === "linkedin");
     const infoGithub = info.find((item) => item.code === "github");
     const position = info.find((item) => item.code === "position");
+    const resume = info.find((item) => item.code === "cv");
 
     return {
       avatar: infoAvatar ? infoAvatar.content : initInfo.avatar,
@@ -42,6 +43,7 @@ const Home: NextPage<HomeProps> = ({ timelines, projects, info }) => {
       facebook: infoFacebook ? infoFacebook.content : undefined,
       linkedin: infoLinkedin ? infoLinkedin.content : undefined,
       github: infoGithub ? infoGithub.content : undefined,
+      resume
     };
   }, [info]);
 
@@ -72,7 +74,8 @@ const Home: NextPage<HomeProps> = ({ timelines, projects, info }) => {
                   Mình là Đạt, sinh viên trường Đại Học Sài Gòn, chuyên ngành Kĩ
                   Thuật Phần Mềm.
                 </p>
-                <p>Mình thích đi ăn, đi chơi, đi dạo phố vào buổi tối.</p>
+                {/* <p>Mình thích đi ăn, đi chơi, đi dạo phố vào buổi tối.</p> */}
+                {infoRender.resume && <a href={infoRender.resume.content} className="mt-2 capitalize link link-hover font-bold btn btn-wide"><p>Xem CV của mình tại đây</p></a>}
                 {/* <p>
                     Đặc biệt là mình{" "}
                     <span className="text-primary">độc thân</span> nhaa
