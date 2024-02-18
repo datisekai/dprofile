@@ -29,17 +29,17 @@ const initInfo = {
 };
 
 const Home: NextPage<HomeProps> = ({
-      timelines,
-      projects,
-      info,
-    }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  timelines,
+  projects,
+  info,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   const infoRender = useMemo(() => {
-    const infoAvatar = info.find((item) => item.code === "avatar");
-    const infoFacebook = info.find((item) => item.code === "facebook");
-    const infoLinkedin = info.find((item) => item.code === "linkedin");
-    const infoGithub = info.find((item) => item.code === "github");
-    const position = info.find((item) => item.code === "position");
-    const resume = info.find((item) => item.code === "cv");
+    const infoAvatar = info.find((item: any) => item.code === "avatar");
+    const infoFacebook = info.find((item: any) => item.code === "facebook");
+    const infoLinkedin = info.find((item: any) => item.code === "linkedin");
+    const infoGithub = info.find((item: any) => item.code === "github");
+    const position = info.find((item: any) => item.code === "position");
+    const resume = info.find((item: any) => item.code === "cv");
 
     return {
       avatar: infoAvatar ? infoAvatar.content : initInfo.avatar,
