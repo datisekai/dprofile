@@ -24,8 +24,8 @@ interface HomeProps {
 }
 
 const initInfo = {
-  avatar: "/images/me.jpg",
-  position: "Intern/Fresher Frontend Developer",
+  avatar: "/images/me1.jpg",
+  position: "Fresher Frontend Developer",
 };
 
 const Home: NextPage<HomeProps> = ({
@@ -54,7 +54,11 @@ const Home: NextPage<HomeProps> = ({
   const router = useRouter();
   return (
     <>
-      <Meta title="Datisekai | Profile" />
+      <Meta
+        title="Datisekai | Profile"
+        description="Datisekai"
+        image={initInfo.avatar}
+      />
       <main className="min-h-screen bg-gradient-to-b from-accent to-neutral text-base-100">
         <div className="relative mx-auto min-h-screen w-[calc(100%-16px)] max-w-[1200px]">
           <Header />
