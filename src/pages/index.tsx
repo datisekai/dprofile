@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { GetStaticProps, type NextPage } from "next";
+import { GetStaticProps, type NextPage, InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
@@ -28,7 +28,11 @@ const initInfo = {
   position: "Intern/Fresher Frontend Developer",
 };
 
-const Home: NextPage<HomeProps> = ({ timelines, projects, info }) => {
+const Home: NextPage<HomeProps> = ({
+      timelines,
+      projects,
+      info,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const infoRender = useMemo(() => {
     const infoAvatar = info.find((item) => item.code === "avatar");
     const infoFacebook = info.find((item) => item.code === "facebook");
@@ -43,7 +47,7 @@ const Home: NextPage<HomeProps> = ({ timelines, projects, info }) => {
       facebook: infoFacebook ? infoFacebook.content : undefined,
       linkedin: infoLinkedin ? infoLinkedin.content : undefined,
       github: infoGithub ? infoGithub.content : undefined,
-      resume
+      resume,
     };
   }, [info]);
 
@@ -75,7 +79,14 @@ const Home: NextPage<HomeProps> = ({ timelines, projects, info }) => {
                   Thuật Phần Mềm.
                 </p>
                 {/* <p>Mình thích đi ăn, đi chơi, đi dạo phố vào buổi tối.</p> */}
-                {infoRender.resume && <a href={infoRender.resume.content} className="mt-2 capitalize link link-hover font-bold btn btn-wide"><p>Xem CV của mình tại đây</p></a>}
+                {infoRender.resume && (
+                  <a
+                    href={infoRender.resume.content}
+                    className="link-hover link btn-wide btn mt-2 font-bold capitalize"
+                  >
+                    <p>Xem CV của mình tại đây</p>
+                  </a>
+                )}
                 {/* <p>
                     Đặc biệt là mình{" "}
                     <span className="text-primary">độc thân</span> nhaa
@@ -116,7 +127,7 @@ const Home: NextPage<HomeProps> = ({ timelines, projects, info }) => {
                 <div className="flex  flex-col justify-end  md:flex-row">
                   <div className="">
                     <LazyLoadImage
-                      src="/images/me.jpg"
+                      src="/images/me1.jpg"
                       className="w-full rounded-2xl md:w-[500px] md:rounded-br-none md:rounded-tr-none md:rounded-bl-2xl md:rounded-tl-2xl"
                       alt="Datisekai"
                     />
@@ -136,7 +147,7 @@ const Home: NextPage<HomeProps> = ({ timelines, projects, info }) => {
 
                     <div className="stat">
                       <div className="stat-title">Năm học</div>
-                      <div className="stat-value">3</div>
+                      <div className="stat-value">4</div>
                       <div className="stat-desc">SGU</div>
                     </div>
                   </div>
