@@ -18,8 +18,13 @@ const BlogCard: FC<ProjectModel> = ({
   return (
     <Link href={`/${slug}`}>
       <div className="space-y-2">
-        <LazyLoadImage src={thumbnail} className="rounded-md aspect-video" alt="Blog" />
-        <h1 className="text-xl link-hover line-clamp-2 text-primary">{name}</h1>
+        <LazyLoadImage
+          effect="blur"
+          src={thumbnail}
+          className="aspect-video rounded-md"
+          alt="Blog"
+        />
+        <h1 className="link-hover text-xl text-primary line-clamp-2">{name}</h1>
         <p className="line-clamp-3">{description}</p>
       </div>
     </Link>

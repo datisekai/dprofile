@@ -29,10 +29,10 @@ const initInfo = {
 };
 
 const Home: NextPage<HomeProps> = ({
-      timelines,
-      projects,
-      info,
-    }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  timelines,
+  projects,
+  info,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   const infoRender = useMemo(() => {
     const infoAvatar = info.find((item: any) => item.code === "avatar");
     const infoFacebook = info.find((item: any) => item.code === "facebook");
@@ -143,11 +143,11 @@ const Home: NextPage<HomeProps> = ({
                       <div className="stat-desc">01/2002</div>
                     </div>
 
-                    <div className="stat">
+                    {/* <div className="stat">
                       <div className="stat-title">Địa chỉ</div>
-                      <div className="stat-value">222</div>
-                      <div className="stat-desc">Võ Thành Trang</div>
-                    </div>
+                      <div className="stat-value">HCM</div>
+                      <div className="stat-desc">Tân Bình</div>
+                    </div> */}
 
                     <div className="stat">
                       <div className="stat-title">Năm học</div>
