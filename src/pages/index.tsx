@@ -29,10 +29,10 @@ const initInfo = {
 };
 
 const Home: NextPage<HomeProps> = ({
-  timelines,
-  projects,
-  info,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+      timelines,
+      projects,
+      info,
+    }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const infoRender = useMemo(() => {
     const infoAvatar = info.find((item: any) => item.code === "avatar");
     const infoFacebook = info.find((item: any) => item.code === "facebook");
@@ -57,7 +57,7 @@ const Home: NextPage<HomeProps> = ({
       <Meta
         title="Datisekai | Profile"
         description="Datisekai"
-        image={initInfo.avatar}
+        image={"/images/logo.png"}
       />
       <main className="min-h-screen bg-gradient-to-b from-accent to-neutral text-base-100">
         <div className="relative mx-auto min-h-screen w-[calc(100%-16px)] max-w-[1200px]">
