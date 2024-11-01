@@ -12,6 +12,7 @@ import { GetServerSideProps, NextPage } from "next";
 import { prisma } from "~/server/db";
 import { TimelineModel } from "~/models/TimelineModel";
 import TextArea from "~/components/TextArea";
+import dynamic from "next/dynamic";
 
 interface FormValues {
   year: number;
@@ -27,9 +28,19 @@ interface TdTableProps {
   data: TimelineModel;
   index: number;
   onDisplayEdit: (data: TimelineModel) => void;
-  handleDelete:(id:string) => void
+  handleDelete: (id: string) => void;
 }
-const TdTable: FC<TdTableProps> = ({ data, index, onDisplayEdit,handleDelete }) => {
+
+const TextEditor = dynamic(() => import("~/components/TextEditor"), {
+  ssr: false,
+});
+
+const TdTable: FC<TdTableProps> = ({
+  data,
+  index,
+  onDisplayEdit,
+  handleDelete,
+}) => {
   const [isShowMore, setIsShowMore] = useState(false);
 
   return (
@@ -44,9 +55,11 @@ const TdTable: FC<TdTableProps> = ({ data, index, onDisplayEdit,handleDelete }) 
             __html: isShowMore ? data.content : data.content.slice(0, 100),
           }}
         />
-        {data.content.length > 100 && <button className="link" onClick={() => setIsShowMore(!isShowMore)}>
-          {isShowMore ? "Shortcut" : "Show more"}
-        </button>}
+        {data.content.length > 100 && (
+          <button className="link" onClick={() => setIsShowMore(!isShowMore)}>
+            {isShowMore ? "Shortcut" : "Show more"}
+          </button>
+        )}
       </td>
       <td>
         <div className="flex space-x-2">
@@ -66,6 +79,7 @@ const TimeLine: NextPage<TimeLineProps> = ({ timelines }) => {
     reset,
     handleSubmit,
     setValue,
+    watch,
   } = useForm<FormValues>({
     defaultValues: {
       year: 0,
@@ -73,6 +87,8 @@ const TimeLine: NextPage<TimeLineProps> = ({ timelines }) => {
       content: "",
     },
   });
+
+  const watchContent = watch("content");
 
   const router = useRouter();
   const updateModalRef = useRef<any>();
@@ -100,36 +116,39 @@ const TimeLine: NextPage<TimeLineProps> = ({ timelines }) => {
     }
   );
 
-  const {mutate:deleteTimeline, isLoading:isLoadingDelete} = useMutation(TimeLineAction.delete,{
-    onSuccess:() => {
-      Swal.fire("Success", "Delete successfull", "success");
-      router.replace(router.asPath);
-    },
-    onError:() => {
-      Swal.fire({
-        title: "Error!",
-        text: textError,
-        icon: "error",
-        confirmButtonText: "OK",
-      });
+  const { mutate: deleteTimeline, isLoading: isLoadingDelete } = useMutation(
+    TimeLineAction.delete,
+    {
+      onSuccess: () => {
+        Swal.fire("Success", "Delete successfull", "success");
+        router.replace(router.asPath);
+      },
+      onError: () => {
+        Swal.fire({
+          title: "Error!",
+          text: textError,
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      },
     }
-  })
+  );
 
-  const handleDelete = (id:string) => {
+  const handleDelete = (id: string) => {
     Swal.fire({
-      title: 'Are you sure?',
+      title: "Are you sure?",
       text: "You won't be able to revert this!",
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        deleteTimeline(id)
+        deleteTimeline(id);
       }
-    })
-  }
+    });
+  };
 
   const { mutate: updateTimeline, isLoading: isLoadingUpdate } = useMutation(
     TimeLineAction.update,
@@ -168,7 +187,11 @@ const TimeLine: NextPage<TimeLineProps> = ({ timelines }) => {
   };
 
   const handleUpdate = (data: FormValues) => {
-    updateTimeline({ ...data, id: currentEdit?.id, content:data.content.replace(/\n/g, "<br/>") });
+    updateTimeline({
+      ...data,
+      id: currentEdit?.id,
+      content: data.content.replace(/\n/g, "<br/>"),
+    });
   };
 
   return (
@@ -178,7 +201,7 @@ const TimeLine: NextPage<TimeLineProps> = ({ timelines }) => {
         <div className="mt-2">
           <button
             onClick={handleDisplayAdd}
-            className="btn-bg-neutral btn-outline btn-circle btn fixed right-10 bottom-5 z-40 shadow-md"
+            className="btn-bg-neutral btn btn-circle btn-outline fixed bottom-5 right-10 z-40 shadow-md"
           >
             Add
           </button>
@@ -220,7 +243,7 @@ const TimeLine: NextPage<TimeLineProps> = ({ timelines }) => {
             <div className="modal-box relative">
               <label
                 htmlFor="add-modal"
-                className="btn-sm btn-circle btn absolute right-2 top-2"
+                className="btn btn-circle btn-sm absolute right-2 top-2"
               >
                 ✕
               </label>
@@ -251,12 +274,9 @@ const TimeLine: NextPage<TimeLineProps> = ({ timelines }) => {
                 </div>
                 <div className="space-y-1">
                   <label htmlFor="content">Content</label>
-                  <TextArea
-                    control={control}
-                    error={errors}
-                    name="content"
-                    placeholder="Type here"
-                    rules={{ required: "Not be empty" }}
+                  <TextEditor
+                    initialContent={watchContent}
+                    onChange={(value: string) => setValue("content", value)}
                   />
                 </div>
               </div>
@@ -279,7 +299,7 @@ const TimeLine: NextPage<TimeLineProps> = ({ timelines }) => {
             <div className="modal-box relative">
               <label
                 htmlFor="update-modal"
-                className="btn-sm btn-circle btn absolute right-2 top-2"
+                className="btn btn-circle btn-sm absolute right-2 top-2"
               >
                 ✕
               </label>
@@ -310,12 +330,9 @@ const TimeLine: NextPage<TimeLineProps> = ({ timelines }) => {
                 </div>
                 <div className="space-y-1">
                   <label htmlFor="content">Content</label>
-                  <TextArea
-                    control={control}
-                    error={errors}
-                    name="content"
-                    placeholder="Type here"
-                    rules={{ required: "Not be empty" }}
+                  <TextEditor
+                    initialContent={watchContent}
+                    onChange={(value: string) => setValue("content", value)}
                   />
                 </div>
               </div>
