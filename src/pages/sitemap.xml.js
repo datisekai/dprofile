@@ -4,12 +4,14 @@ function generateSiteMap(posts) {
    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
      <url>
        <loc>https://datisekai.id.vn</loc>
+       <priority>1</priority>
      </url>
      ${posts
        .map(({ slug }) => {
          return `
        <url>
            <loc>${`https://datisekai.id.vn/${slug}`}</loc>
+           <priority>0.8</priority>
        </url>
      `;
        })
